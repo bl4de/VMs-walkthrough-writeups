@@ -104,6 +104,8 @@ Here we can find a little bit more information. First, we know that we are deali
 The most interesting is http://192.168.1.158/admin/ though, which gives us something really juicy - publicly available Django administartion panel login form. As this seems as the only way to get into the system, let's try to break it.
 
 
+![](assets/4.png)
+
 ## Phase 2. Exploitation
 
 To log into revealed admin panel, we need at least one valid username and then we can try bruteforce or dictionary attack on his/her password, but __only if__ login form allow us to do so. This form contains CSRF token, but from some me reasons this token seemed to be the same all the time and there is no block after some unsuccessful login attempts. That makes this form an excellent target (weak CSRF protection as well as username/password enumeration allowed).
