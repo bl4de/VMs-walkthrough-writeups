@@ -177,7 +177,7 @@ The only thing left to do was to find a way to run system commands with `awk`. B
 awk 'BEGIN {system("/bin/bash")}'
 ```
 
-As I didn't need to spawn a shell (I just wanted to read what's in `/root` folder), I've edited the command to list content of `/roo` directory and finally was able to get the flag and pwn `Toppo` VM:
+As I didn't need to spawn a shell (I just wanted to read what's in `/root` folder), I've edited the command to list content of `/root` directory and finally was able to get the flag and pwn `Toppo` VM:
 
 
 ```
